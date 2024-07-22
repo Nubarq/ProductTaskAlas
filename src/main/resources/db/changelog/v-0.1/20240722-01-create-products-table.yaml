@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: drop_Table_products
+      author: admin
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: products
+      changes:
+        - dropForeignKeyConstraint:
+            constraintName: fk_products
+            baseTableName: shopping_cart_products
+        - dropTable:
+            cascadeConstraints: true
+            tableName: productsdetails
+
+  - changeSet:
+      id: create_products
+      author: admin
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: products
+      changes:
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+#              - column:
+#                  name: productdetails
+#                  type: int
+#                  constraints:
+#                    unique: true
+#                    nullable: false
+              - column:
+                  name: category_id
+                  type: int
+                  constraints:
+                    nullable: false
+#        - addForeignKeyConstraint:
+#            baseTableName: products
+#            baseColumnNames: productdetail_id
+#            constraintName: fk_productdetail
+#            referencedTableName: productdetails
+#            referencedColumnNames: product_details_id
+#            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: products
+            baseColumnNames: category_id
+            constraintName: fk_category
+            referencedTableName: categories
+            referencedColumnNames: categories_id
+            onDelete: CASCADE

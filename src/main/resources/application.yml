@@ -1,0 +1,35 @@
+logging:
+  level:
+    root: info
+
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:8890/alasDb2
+    username: alas2
+    password: alas2
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    database: mysql
+
+  liquibase:
+    enabled: ${LIQUIBASE_ENABLED:true}
+    #    change-log: ${LIQUIBASE_CLASSPATH:classpath:db/changelog/db.changelog-${ACTIVE_PROFILE:test}.yaml}
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+
+
+
+url:
+  ignore:
+    swagger: /v2/api-docs, /webjars/*, /swagger-resources/, /actuator/health, /swagger-ui/index.html, /swagger-ui.html, /app//.{js,html}
+
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger

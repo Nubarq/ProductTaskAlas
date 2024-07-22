@@ -1,0 +1,75 @@
+databaseChangeLog:
+  - changeSet:
+      id: drop_table_shoppingcart
+      author: admin
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: categories
+      changes:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: shopping_cart
+
+  - changeSet:
+      id: create_shoppingcart
+      author: admin
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: shopping_carts
+      changes:
+        - createTable:
+            tableName: shopping_carts
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+
+  - changeSet:
+      id: 1
+      author: admin
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: carts_seq
+      changes:
+        - createTable:
+            tableName: carts_seq
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2
+      author: admin
+      changes:
+        - insert:
+            tableName: carts_seq
+            columns:
+              - column:
+                  name: name
+                  value: "John"

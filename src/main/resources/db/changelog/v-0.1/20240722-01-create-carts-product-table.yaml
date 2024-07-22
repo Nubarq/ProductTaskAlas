@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: drop_Table_cartproducts
+      author: admin
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: cart_products
+      changes:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: cart_products
+
+  - changeSet:
+      id: create_cartproducts
+      author: admin
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: cart_products
+      changes:
+        - createTable:
+            tableName: cart_products
+            columns:
+              - column:
+                  name: cart_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: int
+                  constraints:
+                    nullable: false

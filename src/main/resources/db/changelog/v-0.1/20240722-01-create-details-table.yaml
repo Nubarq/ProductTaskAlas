@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: drop_Table_productdetails
+      author: admin
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: productdetails
+      changes:
+        - dropForeignKeyConstraint:
+            constraintName: fk_productdetail
+            baseTableName: productdetails
+        - dropTable:
+            cascadeConstraints: true
+            tableName: productdetails
+
+  - changeSet:
+      id: create_productdetails
+      author: admin
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: productdetails
+      changes:
+        - createTable:
+            tableName: productdetails
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: color
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image_url
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: products
+            baseColumnNames: id
+            constraintName:  fk_productdetail
+            referencedTableName: productdetails
+            referencedColumnNames: id
+            onDelete: CASCADE
